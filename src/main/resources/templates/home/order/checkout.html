@@ -1,0 +1,109 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::checkout})}">
+
+    <main th:fragment="checkout">
+
+        <!-- Checkout Start -->
+        <div class="row px-xl-5 d-flex justify-content-center" ng-controller="shopping-cart-ctrl">
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span th:text="#{chout.order}"
+                        class="bg-secondary pr-3" >Order Total</span></h5>
+                <div class="bg-light p-30 mb-5">
+                    <div class="border-bottom">
+                        <div class="row justify-content-between m-0">
+                            <h6 class="mb-3" th:text="#{chout.order1}">Products</h6>
+
+                            <h6 class="mb-3" th:text="#{chout.order2}">Price</h6>
+                        </div>
+                        <div class="d-flex justify-content-between" ng-repeat="item in cart.items">
+                            <p>{{item.product.name}} <span class="ml-2"><strong
+                                    style="font-size: 14px;">x</strong>{{item.qty}}</span></p>
+                            <p>
+                                {{item.product.price | number: 0}} VNĐ
+                            </p>
+                        </div>
+                    </div>
+                    <div class="border-bottom pt-3 pb-2">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h6 th:text="#{chout.order3}">Subtotal</h6>
+                            <h6>
+                                {{cart.amount | number:0}} VNĐ
+                            </h6>
+                        </div>
+                        <div class="d-flex justify-content-between">
+                            <h6 class="font-weight-medium" th:text="#{chout.order4}">Shipping</h6>
+                            <h6 class="font-weight-medium">0</h6>
+                        </div>
+                    </div>
+                    <div class="pt-2">
+                        <div class="d-flex justify-content-between mt-2">
+                            <h5 th:text="#{chout.order5}">Total</h5>
+                            <h5>
+                                {{cart.amount | number:0}} VNĐ
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <h5 class="section-title position-relative text-uppercase mb-3"><span class="bg-secondary pr-3" th:text="#{chout.bill}">Billing Information</span>
+                </h5>
+                <!--co cai form o day-->
+                <div class="bg-light p-30 mb-3">
+                    <div class="row">
+                        <div class="col-md form-group" >
+                            <label th:text="#{chout.bill1}">Address</label>
+                            <input ng-model="order.address" th:if="${orderInfo.address != null}" th:attr="ng-init='order.address=\'' + ${orderInfo.address} + '\''"
+                                   class="form-control" name="address" type="text" placeholder="123 Street" required="required">
+                            <input ng-model="order.address" th:if="${orderInfo.address == null}" class="form-control" name="address" type="text" placeholder="123 Street" required="required">
+                        </div>
+                        <div class="col-md form-group" >
+                            <label th:text="#{chout.bill2}">Phone</label>
+                            <input ng-model="order.phone" th:if="${orderInfo.phone != null}" th:attr="ng-init='order.phone=\'' + ${orderInfo.phone} + '\''"
+                                   class="form-control" name="phone" type="text" placeholder="Phone number" required="required">
+                            <input ng-model="order.phone" th:if="${orderInfo.phone == null}" class="form-control" name="phone" type="text" placeholder="Phone number" required="required">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="mb-5">
+                    <h5 class="section-title position-relative text-uppercase mb-3"><span
+                            class="bg-secondary pr-3" th:text="#{chout.bill3}">Payment</span></h5>
+                    <div class="bg-light p-30">
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="paypal" ng-model="paymentMethodRadio" value="paypal">
+                                <label class="custom-control-label" for="paypal">VNPay</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" ng-model="paymentMethodRadio" value="momo" id="momo">
+                                <label class="custom-control-label" for="momo">Momo</label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="custom-control custom-radio">
+                                <input type="radio" class="custom-control-input" name="payment" id="directcheck" ng-model="paymentMethodRadio" value="directcheck">
+                                <label class="custom-control-label" for="directcheck" th:text="#{chout.bill4}">Payment upon delivery</label>
+                            </div>
+                        </div>
+                        <div id="orderUsername" sec:authentication="name" class="text-light"></div>
+                        <div ng-show="cart.items.length != 0">
+                            <button ng-click="order.performPayment()" ng-show="paymentMethodRadio === 'directcheck'" class="btn btn-block btn-primary font-weight-bold py-3" th:text="#{chout.bill5}">Place Order</button>
+                            <button ng-click="order.redirectToVNPAY()" ng-show="paymentMethodRadio === 'paypal'" class="btn btn-block btn-primary font-weight-bold py-3">VNPay Payment</button>
+                            <button ng-click="order.redirectToMomo()" ng-show="paymentMethodRadio === 'momo'" class="btn btn-block btn-primary font-weight-bold py-3">Momo Payment</button>
+                        </div>
+                        <div ng-show="cart.items.length === 0">
+                            <button class="btn btn-block btn-primary disabled font-weight-bold py-3">Chưa có sản phẩm</button>
+                        </div>
+                    </div>
+                </div>
+                <!--co cai form o day-->
+            </div>
+        </div>
+        <!-- Checkout End -->
+
+    </main>
+
+</div>

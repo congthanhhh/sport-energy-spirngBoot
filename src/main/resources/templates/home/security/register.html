@@ -1,0 +1,68 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::register})}">
+
+    <main th:fragment="register">
+        <div id="LoginForm">
+            <div class="container">
+                <div class="login-form">
+                    <div class="main-div" style="max-width: 60%;">
+                        <div class="panel">
+                            <a href="" class="text-decoration-none">
+                                <span class="h5 text-uppercase text-primary bg-dark px-2">Sport's</span>
+                                <span class="h5 text-uppercase text-dark bg-primary px-2 ml-n1">Energy</span>
+                            </a>
+                            <p class="text-info" th:text="${registerMessage}"> <a th:href="@{/security/login/form}">login now</a></p>
+                        </div>
+                        <form id="Login"
+                              th:action="@{/home/register}" method="post" th:object="${account}"
+                              enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-4">
+                                    <div>
+                                        <img id="previewImage" th:src="@{/img/noimg.jpg}" width="200px" height="230px" alt="User image" class="mb-2">
+                                        <input style="padding-top: 20px" type="file" name="img" id="photo" onchange="showPreview(this)"/>
+                                    </div>
+                                </div>
+                                <div class="col-8 pl-5">
+                                    <div class="form-group">
+                                        <input type="text" th:field="*{username}" name="username" class="form-control"
+                                               placeholder="Username" required="required"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="password" th:field="*{password}" name="password"
+                                               class="form-control" placeholder="Password" required="required"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="text" th:field="*{fullname}" name="fullname" class="form-control"
+                                               placeholder="Fullname" required="required"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <input type="email" th:field="*{email}" name="email" class="form-control"
+                                               placeholder="Email" required="required"/>
+                                        <input type="hidden" name="emailCc" class="form-control"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <div sec:authorize="isAuthenticated()" >
+                                            <select name="roleName" sec:authorize="hasAuthority('ADMIN')">
+                                                <option th:each="role : ${roles}" th:value="${role.id}"
+                                                        th:text="${role.name}" th:selected="${role.id == 'CUST'}"></option>
+                                            </select>
+                                        </div>
+                                        <select name="roleName" hidden="hidden">
+                                            <option th:each="role : ${roles}" th:value="${role.id}"
+                                                    th:text="${role.name}" th:selected="${role.id == 'CUST'}"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2">Sign up</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+
+</div>
+

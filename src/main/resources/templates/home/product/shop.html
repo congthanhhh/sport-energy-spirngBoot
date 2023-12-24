@@ -1,0 +1,100 @@
+
+<div th:replace="~{/home/layout/index :: dynamic(~{::shopProduct})}">
+
+    <main th:fragment="shopProduct">
+
+        <!-- Breadcrumb Start -->
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+                <div class="col-12">
+                    <nav class="breadcrumb bg-light mb-30">
+                        <a class="breadcrumb-item text-dark" href="#" th:text="#{link.home}">Home</a>
+                        <a class="breadcrumb-item text-dark" href="#" th:text="#{link.shop}">Shop</a>
+                        <span class="breadcrumb-item active" th:text="#{link.shoplist}">Shop List</span>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+
+        <!-- Shop Start -->
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+
+
+                <!-- Shop Product Start -->
+                <div class="col-lg col-md">
+                    <div class="row pb-3">
+                        <div class="col-12 pb-1">
+                            <div class="d-flex align-items-center justify-content-between mb-4">
+                                <div class="ml-2">
+                                    <div class="btn-group">
+                                        <a th:href="@{|/product/shop?sort=lowToHigh|}" class="btn btn-sm btn-light">Thấp đến cao</a>
+                                    </div>
+                                    <div class="btn-group ml-2">
+                                        <a th:href="@{|/product/shop?sort=highToLow|}" class="btn btn-sm btn-light">Cao đến thấp</a>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-4 col-sm-6 pb-1" th:each="p: ${items}">
+                            <a style="cursor: pointer;" th:href="@{|/product/detail/${p.id}|}">
+                                <div class="product-item bg-light mb-4">
+                                    <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                                        <img class="img-fluid w-75"  th:src="@{|/img/productThumbnail/*{p.thumbnail}|}" alt="">
+                                    </div>
+                                    <div class="text-center py-4">
+                                        <div class="col-12">
+                                            <a style="display: block; max-width: 100%; overflow: hidden; word-wrap: break-word;" class="h6 text-decoration-none text-truncate text-break" th:href="@{|/product/detail/${p.id}|}" th:title="${p.name}">[[${p.name}]]</a>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center mt-2">
+                                            <h5>
+                                                <span th:text="${#numbers.formatDecimal(p.price, 0, 'COMMA', 0, 'POINT')}"></span><span class="product-custom-currency"> VNĐ</span>
+                                            </h5>
+                                        </div>
+                                        <div class="d-flex align-items-center justify-content-center mb-1">
+                                            <small class="fa fa-star text-primary mr-1"></small>
+                                            <small class="fa fa-star text-primary mr-1"></small>
+                                            <small class="fa fa-star text-primary mr-1"></small>
+                                            <small class="fa fa-star text-primary mr-1"></small>
+                                            <small class="fa fa-star text-primary mr-1"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="col-12">
+                            <nav>
+                                <ul class="pagination justify-content-center">
+                                    <li class="page-item" th:classappend="${items.number == 0} ? 'disabled' : ''">
+                                        <a th:text="#{pages.first}" class="page-link" th:href="@{|/product/shop${cid != null ? '?cid=' + cid + '&page=' : '?page='}0|}">First</a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${items.number == 0} ? 'disabled' : ''">
+                                        <a th:text="#{pages.pre}" class="page-link" th:href="@{|/product/shop${cid != null ? '?cid=' + cid + '&page=' : '?page='}${items.number - 1}|}">Previous</a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${items.number + 1 == items.totalPages} ? 'disabled' : ''">
+                                        <a th:text="#{pages.next}" class="page-link" th:href="@{|/product/shop${cid != null ? '?cid=' + cid + '&page=' : '?page='}${items.number + 1}|}">Next</a>
+                                    </li>
+                                    <li class="page-item" th:classappend="${items.number + 1 == items.totalPages} ? 'disabled' : ''">
+                                        <a th:text="#{pages.last}" class="page-link" th:href="@{|/product/shop${cid != null ? '?cid=' + cid + '&page=' : '?page='}${items.totalPages - 1}|}">Last</a>
+                                    </li>
+
+
+                                </ul>
+                                <div class="d-flex justify-content-center">Page [[${items.number+1}]] of [[${items.totalPages}]]</div>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <!-- Shop Product End -->
+            </div>
+        </div>
+        <!-- Shop End -->
+
+    </main>
+
+</div>
+
+

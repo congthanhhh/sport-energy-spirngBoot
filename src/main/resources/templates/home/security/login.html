@@ -1,0 +1,50 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::login})}">
+
+    <main th:fragment="login">
+
+        <div id="LoginForm">
+            <div class="container">
+                <div class="login-form">
+                    <div class="main-div">
+                        <div class="panel">
+                            <a href="" class="text-decoration-none">
+                                <span class="h5 text-uppercase text-primary bg-dark px-2">Sport's</span>
+                                <span class="h5 text-uppercase text-dark bg-primary px-2 ml-n1">Energy</span>
+                            </a>
+                            <p class="text-danger" th:text="${message}"></p>
+                        </div>
+                        <form id="Login" th:action="@{/security/login}" method="post">
+
+                            <div class="form-group">
+                                <input type="text" name="username" class="form-control" id="inputEmail"
+                                       placeholder="Username" required="required">
+
+                            </div>
+
+                            <div class="form-group">
+                                <input type="password" name="password" class="form-control" id="inputPassword"
+                                       placeholder="Password" required="required">
+
+                            </div>
+                            <div style="font-size: 14px">
+                                <div class="text-left">
+                                    <input type="checkbox" name="remember"><label>Remember</label>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Login</button>
+                            <div class="forgot">
+                                <a href="/home/register">Create account</a>
+                            </div>
+                            <div class="forgot">
+                                <a th:href="@{/home/from-forgotPass}" >Forgot password</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>

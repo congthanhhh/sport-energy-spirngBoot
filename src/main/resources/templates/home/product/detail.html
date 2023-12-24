@@ -1,0 +1,332 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::detailProduct})}">>
+
+    <main th:fragment="detailProduct">
+
+        <!-- Breadcrumb Start -->
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+                <div class="col-12">
+                    <nav class="breadcrumb bg-light mb-30">
+                        <a class="breadcrumb-item text-dark" href="#">Home</a>
+                        <a class="breadcrumb-item text-dark" href="#">Shop</a>
+                        <span class="breadcrumb-item active">Shop Detail</span>
+                    </nav>
+                </div>
+            </div>
+        </div>
+        <!-- Breadcrumb End -->
+
+        <div th:if="${error}" class="alert alert-danger" role="alert">
+            <span th:text="${error}"></span>
+        </div>
+
+        <!-- Shop Detail Start -->
+        <div class="container-fluid pb-5" th:object="${detailPr}">
+            <div class="row px-xl-5" ng-controller="shopping-cart-ctrl">
+                <div class="col-lg-5 mb-30">
+                    <div id="product-carousel" class="carousel slide" data-ride="carousel">
+                        <div class="carousel-inner bg-light">
+                            <div class="carousel-item active">
+
+                                <img class="w-100 h-100" th:src="@{|/img/productThumbnail/*{thumbnail}|}"
+
+                                     alt="Thumbnail">
+
+                            </div>
+                            <div th:each="img :${imgPr}" class="carousel-item ">
+                                <img class="w-100 h-100" th:src="@{|/img/productImage/${img.image}|}" alt="Image">
+                            </div>
+                        </div>
+                        <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
+                            <i class="fa fa-2x fa-angle-left text-dark"></i>
+                        </a>
+                        <a class="carousel-control-next" href="#product-carousel" data-slide="next">
+                            <i class="fa fa-2x fa-angle-right text-dark"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="col-lg-7 h-auto mb-30">
+                    <div class="h-100 bg-light p-30">
+                        <h3 th:text="*{name}"></h3>
+                        <div class="d-flex mb-3">
+                            <div class="text-primary mr-2">
+                                <small class="fas fa-star"></small>
+                                <small class="fas fa-star"></small>
+                                <small class="fas fa-star"></small>
+                                <small class="fas fa-star"></small>
+                                <small class="fas fa-star"></small>
+                            </div>
+                            <small class="pt-1">( <span th:text="${countReview}"></span> Reviews)</small>
+                        </div>
+                        <h3 class="font-weight-semi-bold mb-4">
+                            <span th:text="*{#numbers.formatDecimal(price, 0, 'COMMA', 0, 'POINT')}"></span><span
+                                class="pl-1">VNĐ</span>
+                        </h3>
+                        <p class="mb-4">[[*{description}]]</p>
+
+                        <div class="d-flex mb-4">
+                            <strong class="text-dark mr-3">Sizes:</strong>
+                            <form>
+                                <div class="custom-control custom-radio custom-control-inline"
+
+                                     th:each="att: ${uniqueSizes.values()}">
+                                    <input type="radio" class="custom-control-input" th:id="'size-' + ${att.sizes.id}"
+                                           th:value="${att.sizes.id}"
+                                           name="size"
+                                           th:if="${att.sizes.id != null}"
+                                           th:attr="ng-click=@{|cart.selectSize(${att.sizes.getId()}); cart.selectSizeName('${att.sizes.getName()}'); cart.showStock(*{id})|}"
+                                    />
+                                    <label class="custom-control-label" th:for="'size-' + ${att.sizes.getId()}"
+                                           th:text="${att.sizes.name}"></label>
+
+
+                                </div>
+                            </form>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <strong class="text-dark mr-3">Colors:</strong>
+                            <form>
+                                <div class="custom-control custom-radio custom-control-inline"
+
+                                     th:each="att: ${uniqueColors.values()}">
+                                    <input type="radio" class="custom-control-input" th:id="'color-' + ${att.colors.id}"
+                                           th:value="${att.colors.id}"
+                                           name="color"
+                                           th:if="${att.colors.id != null}"
+                                           th:attr="ng-click=@{|cart.selectColor(${att.colors.id}); cart.selectColorName('${att.colors.name}'); cart.showStock(*{id})|}"
+                                    />
+                                    <label class="custom-control-label" th:for="'color-' + ${att.colors.id}"
+                                           th:text="${att.colors.name}"></label>
+
+                                </div>
+                            </form>
+                        </div>
+                        <div id="show-stock-here">Số lượng: {{cart.stock}}</div>
+
+                        <div class="d-flex align-items-center mb-4 pt-2">
+                            <div class="input-group quantity mr-3" style="width: 130px;">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary btn-minus"
+
+                                            ng-click="cart.selectedQty > 1 ? cart.selectedQty = cart.selectedQty - 1 : null">
+
+                                        <i class="fa fa-minus"></i>
+                                    </button>
+                                </div>
+                                <input type="number" class="form-control bg-secondary border-0 text-center"
+
+                                       ng-model="cart.selectedQty" min="1">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-primary btn-plus"
+                                            ng-click="cart.selectedQty = cart.selectedQty + 1">
+
+                                        <i class="fa fa-plus"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+
+                            <button th:attr="ng-click=@{|cart.add(*{id})|}" class="btn btn-primary px-3"
+                                    ng-disabled="cart.stock === 0 || cart.selectedQty > cart.stock">
+
+                                <i class="fa fa-shopping-cart mr-1"></i>
+                                <span ng-show="cart.stock !== 0 && cart.selectedQty <= cart.stock">Add To Cart</span>
+                                <span ng-show="cart.stock === 0 || cart.selectedQty > cart.stock">Hết hàng</span>
+                            </button>
+
+                            
+                      
+                            
+                            <form id="addToFavoritesForm" style="margin-bottom: 10px;">
+                                <input type="hidden" id="productId" th:value="${id}" />
+                                <button sec:authorize="isAuthenticated()" type="submit" class="btn btn-primary " style="margin-left: 10px; margin-top: 10px;"><i class="far fa-heart"></i><span> Thêm vào yêu thích</span></button>
+                            </form>
+                            
+
+                        </div>
+
+
+
+                        <div class="d-flex pt-2">
+                            <strong class="text-dark mr-2">Share on:</strong>
+                            <div class="d-inline-flex">
+                                <a class="text-dark px-2" href="">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a class="text-dark px-2" href="">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a class="text-dark px-2" href="">
+                                    <i class="fab fa-linkedin-in"></i>
+                                </a>
+                                <a class="text-dark px-2" href="">
+                                    <i class="fab fa-pinterest"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Review -->
+            <div class="row px-xl-5" ng-controller="rating-ctrl">
+                <div class="col">
+                    <div class="bg-light p-30">
+                        <div class="nav nav-tabs mb-4">
+                            <a class="nav-item nav-link text-dark" active data-toggle="tab" href="#tab-pane-3">Reviews (<span ng-bind="reviewCount"></span>)</a>
+                            <a class="nav-item nav-link text-dark" data-toggle="tab" href="#tab-pane-1">Thông tin
+                                chi tiết</a>
+
+                        </div>
+                        <div class="tab-content">
+                            <div class="tab-pane fade" id="tab-pane-1">
+                                <h4 class="mb-3">Thông tin chi tiết</h4>
+                                <p class="mb-4">[[*{bigDescription}]]</p>
+                            </div>
+                            <div class="tab-pane fade show active" id="tab-pane-3">
+                                <h4 class="mb-4"> {{reviewCount}} review </h4>
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="media mb-4" ng-repeat="item in pager.rating">
+                                            <input type="hidden" value="{{item.id}}">
+                                            <img ng-src="{{'/img/user/'+item.order.account.photo}}" alt="Image"
+                                                 class="img-fluid mr-3 mt-1"
+                                                 style="width: 45px;">
+
+                                            <div class="media-body">
+                                                <h6>{{item.username}}<small> - <i>{{item.createDate | date :
+                                                    'dd-MM-yyyy'}}</i></small></h6>
+                                                <div class="text-primary mb-2">
+                                                    <span>{{item.rating}}</span>
+                                                    <i class="fas fa-star"></i>
+                                                </div>
+
+                                                <p>{{item.content}}</p>
+                                            </div>
+                                            <div sec:authorize="hasAnyAuthority('DIRE','STAF')">
+                                                <button class="btn btn-danger" ng-click="deleteRating(item.id)"><i class="fas fa-trash"></i></button>
+                                            </div>
+                                        </div>
+                                        <ul class="pagination pagination-md justify-content-center">
+                                            <li class="page-item"><button ng-click="pager.first()"
+                                                    class="btn btn-secondary">First</button></li>
+                                            <li class="page-item"><button ng-click="pager.prev()"
+                                                    class="btn btn-secondary">Pre</button></li>
+                                            <li class="page-item"><button class="btn btn-secondary" disabled>{{pager.page
+                                                    + 1}} of {{pager.count}}</button></li>
+                                            <li class="page-item"><button ng-click="pager.next()"
+                                                    class="btn btn-secondary">Next</button></li>
+                                            <li class="page-item"><button ng-click="pager.last()"
+                                                    class="btn btn-secondary">Last</button></li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <h4 class="mb-4">Để lại đánh giá</h4>
+                                        <div sec:authorize="!isAuthenticated()">
+                                            <a th:href="@{/security/login/form}" > <button class="btn btn-success"> Hãy đăng nhập để đánh giá </button></a>
+                                        </div>
+                                        <div sec:authorize="isAuthenticated()">
+                                            <small>Các trường * là bắt buộc</small>
+                                            <form ng-submit="createRating()">
+                                                <div class="form-group">
+                                                    <label for="message">Your Review *</label>
+                                                    <textarea id="message" ng-model="review.content" cols="30" rows="5"
+                                                              class="form-control" required></textarea>
+                                                </div>
+                                                <div class="d-flex my-3">
+                                                    <p class="mb-0 mr-2">Your Rating * :</p>
+                                                    <div class="text-primary">
+                                                        <select ng-model="review.rating" ng-init="review.rating='5'" id="rating">
+                                                            <option value="1">1</option>
+                                                            <option value="2">2</option>
+                                                            <option value="3">3</option>
+                                                            <option value="4">4</option>
+                                                            <option value="5">5</option>
+                                                        </select>
+                                                        <i class="fas fa-star"></i>
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label for="name">Your Name</label>
+                                                    <input type="text" ng-model="review.username" class="form-control" id="name">
+                                                </div>
+                                                <input type="hidden" class="form-control" id="order-id">
+                                                <div class="form-group mb-0">
+                                                    <input type="submit" value="Review"
+                                                           class="btn btn-primary px-3">
+                                                </div>
+                                            </form>
+                                        </div>
+                                            <div th:text="${detailPr.id}" id="rating-pro-id" style="visibility: hidden;"></div>
+                                            <div sec:authentication="name" id="rating-user-id" style="visibility: hidden;"></div>
+
+
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <!-- Shop Detail End -->
+
+
+        <!-- Products Start -->
+        <div class="container-fluid py-5">
+
+            <h2 class="section-title position-relative text-uppercase mx-xl-5 mb-4"><span class="bg-secondary pr-3">You May Also Like</span>
+            </h2>
+
+            <div class="row px-xl-5">
+
+                <div class="col">
+                    <div class="owl-carousel related-carousel">
+                        <div class="product-item bg-light" th:each="related: ${relatedProducts}">
+                            <div class="product-img position-relative overflow-hidden">
+
+                                <img class="img-fluid w-100" th:src="@{|/img/productThumbnail/${related.thumbnail}|}"
+                                     alt="product image">
+
+                                <a class="product-action" th:href="@{|/product/detail/${related.id}|}"></a>
+                            </div>
+                            <div class="text-center py-4">
+                                <a class="h6 text-decoration-none text-truncate"
+
+                                   th:href="@{|/product/detail/${related.id}|}" th:text="${related.name}"></a>
+
+                                <div class="d-flex align-items-center justify-content-center mt-2">
+                                    <h5><span
+                                            th:text="${#numbers.formatDecimal(related.price, 0, 'COMMA', 0, 'POINT')}"></span><span
+                                            class="product-custom-currency">đ</span></h5>
+                                </div>
+                                <div class="d-flex align-items-center justify-content-center mb-1">
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small class="fa fa-star text-primary mr-1"></small>
+                                    <small>(99)</small>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products End -->
+
+
+
+
+</main>
+
+</div>

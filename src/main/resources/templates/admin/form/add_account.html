@@ -1,0 +1,206 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::accountmanageTable})}">
+	<div class="content-wrapper" th:fragment="accountmanageTable">
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-4">
+						<h1>Account Manage</h1>
+					</div>
+					<div class="col-sm-4">
+						<p class="text-info" th:text="${registrerMessage}" style="text-align: center;"></p>
+					</div>
+					<div class="col-sm-4">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item"><a href="/admin/accounts">AccountTable</a></li>
+							<li class="breadcrumb-item active">AddAccount</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div>
+					<div>
+						<div class="card">
+							<div class="card-header">
+								<h2>Add Account</h2>
+
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<form id="form-1" th:action="@{/admin/accounts/createAccount}" method="post"
+									th:object="${account}" enctype="multipart/form-data">
+									<div class="card-body">
+										<div class="row">
+											<div class=" form-group col-1">
+												<!-- Thêm khung chứa ảnh ở bên trái với CSS trực tiếp -->
+												<div
+													style="float: left; border-radius: 10%; margin-bottom: 10px; overflow: hidden;">
+													<!-- Ảnh mặc định hiển thị trước khi chưa lấy ảnh -->
+													<img id="previewImage" th:src="@{/img/noimg.jpg}" width="70px"
+														height="70px" alt="User image">
+												</div>
+											</div>
+
+											<div class="form-group col-4">
+												<label for="InputFile">Image</label>
+												<div class="input-group">
+													<div class="custom-file">
+														<input type="file" class="custom-file-input" name="img"
+															id="InputFile" onchange="showPreview5(this)"> <label
+															class="custom-file-label" for="InputFile" id="InputLabel">
+															Choose file </label>
+													</div>
+												</div>
+											</div>
+											<div class="form-group col-4">
+												<label for="SelectRounded0">Role</label> <select name="roleName"
+													class="custom-select rounded-0" id="SelectRounded0">
+													<option value="">--- Choose the role ---</option>
+													<!-- <option th:each="data : ${roles}" sec:authorize="hasAnyAuthority('DIRE')"
+														th:value="${data.id}" th:text="${data.name}"></option> -->
+													<!-- Hiển thị tất cả tùy chọn cho vai trò 'DIRE' -->
+													<!-- Hiển thị tất cả tùy chọn cho vai trò 'DIRE' -->
+													<option sec:authorize="hasAuthority('DIRE')"
+														th:each="data : ${roles}" th:value="${data.id}"
+														th:text="${data.name}"></option>
+
+
+													<option sec:authorize="hasAuthority('STAF')"
+														th:each="data : ${roles}"
+														th:if="${data.id == 'CUST' or data.id == 'STAF'}"
+														th:value="${data.id}" th:text="${data.name}"></option>
+
+												</select>
+											</div>
+
+										</div>
+										<div class="row">
+											<div class="form-group col-6">
+												<label for="InputUsername1">Address</label> <input type="text"
+													class="form-control" id="InputUsername1" th:field="*{address}"
+													placeholder="Enter address">
+											</div>
+											<div class="form-group col-6">
+												<label for="InputUsername2">Phone</label> <input type="text"
+													class="form-control" id="InputUsername2" th:field="*{phone}"
+													placeholder="Enter phone">
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-6">
+												<label for="InputEditName">Username</label> <input type="text"
+													class="form-control" id="InputEditName" th:field="*{username}"
+													placeholder="Enter username">
+												<span class="form-message"></span>
+											</div>
+											<div class="form-group col-6">
+												<label for="InputPassword1">Password</label> <input type="password"
+													class="form-control" id="InputPassword1" th:field="*{password}"
+													placeholder="Password">
+											</div>
+										</div>
+										<div class="row">
+											<div class="form-group col-6">
+												<label for="InputName1">Name</label> <input type="text"
+													class="form-control form-control-border border-width-2"
+													th:field="*{fullname}" id="InputName1" placeholder="Enter name">
+											</div>
+											<div class="form-group col-6">
+												<label for="InputEmail1">Email address</label> <input type="email"
+													class="form-control form-control-border border-width-2"
+													th:field="*{email}" id="InputEmail1" placeholder="Enter email">
+											</div>
+										</div>
+
+									</div>
+									<!-- /.card-body -->
+									<div class="card-footer d-flex justify-content-end">
+										<button type="submit" class="btn btn-success">Submit</button>
+										<div class="mx-2"></div>
+										<!-- Thêm khoảng cách ngang -->
+										<button type="reset" class="btn btn-danger">Cancel</button>
+									</div>
+								</form>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
+		<!-- <script>
+			Validator({
+				form : '#form-1',
+				formGroupSelector : '.form-group',
+				errorSelector : '.form-message',
+				rules : [
+						Validator.isRequire('#InputEditName',
+								'Vui lòng nhập tên đầy đủ'),
+						Validator.isRequire('#InputPassword1',
+								'Vui lòng nhập password'),
+						Validator.isRequire('#fileInput',
+								'Vui lòng chọn thumbnail '),
+						Validator.isRequire('#InputName1',
+								'Vui lòng nhập đầy đủ họ tên '),
+						Validator.isRequire('#InputEmail1',
+								'Vui lòng nhập email '),
+						Validator.isRequire('#fileInput3',
+								'Vui lòng chọn image '), ],
+			});
+		</script> -->
+
+		<script>
+			document
+				.getElementById('form-1')
+				.addEventListener(
+					'submit',
+					function (event) {
+						var fields = document
+							.querySelectorAll('#form-1 .form-group input, #form-1 .form-group select');
+						var hasError = false;
+						fields.forEach(function (field) {
+							console.log(field.value)
+							if (!field.value.trim()) {
+								showError(field);
+								hasError = true;
+							} else {
+								removeError(field);
+							}
+						});
+
+						if (hasError) {
+							event.preventDefault(); // Ngăn chặn hành động mặc định của form
+							alert('Vui lòng điền đầy đủ thông tin trước khi gửi.');
+							console.log(fields);
+							// Hoặc hiển thị thông báo lỗi hoặc thực hiện hành động cần thiết khác
+						} else {
+							// Nếu không có lỗi, cho form submit bình thường
+							// Không cần làm gì cả, form sẽ tự submit
+						}
+					});
+
+			function showError(field) {
+				field.parentElement.classList.add('has-error');
+				// Hiển thị thông báo lỗi hoặc thực hiện hành động cần thiết khác
+			}
+
+			function removeError(field) {
+				field.parentElement.classList.remove('has-error');
+				// Có thể ẩn thông báo lỗi hoặc thực hiện hành động khác để loại bỏ lỗi
+			}
+		</script>
+
+
+
+	</div>
+</main>

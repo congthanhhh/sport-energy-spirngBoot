@@ -1,0 +1,201 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::productTable})}">
+
+	<!-- Content Wrapper. Contains page content -->
+	<div class="content-wrapper" th:fragment="productTable" ng-app="available-app"
+		 ng-controller="order-ctrl">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<!-- admin box revenue -->
+				<div th:insert="~{admin/layout/navbar :: adminBoxRevenue}"></div>
+				<!-- /admin box revenue -->
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>ProductTable</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item active">ProductTable</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<section class="content">
+			<div class="row">
+				<div class="col-12">
+					<div class="card card-primary card-tabs">
+						<div class="card-header p-0 pt-1">
+							<ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+								<li class="nav-item">
+									<a class="nav-link active" id="custom-tabs-one-home-tab" data-toggle="pill" href="#custom-tabs-one-home" role="tab" aria-controls="custom-tabs-one-home" aria-selected="true">Sản phẩm</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" id="custom-tabs-one-profile-tab" data-toggle="pill" href="#custom-tabs-one-profile" role="tab" aria-controls="custom-tabs-one-profile" aria-selected="false">Hình ảnh</a>
+								</li>
+							</ul>
+						</div>
+						<div class="card-body">
+							<div class="tab-content" id="custom-tabs-one-tabContent">
+								<div class="tab-pane fade show active" id="custom-tabs-one-home" role="tabpanel" aria-labelledby="custom-tabs-one-home-tab">
+									<!-- table -->
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-12">
+												<!-- /.card -->
+												<div class="card">
+													<div class="card-header">
+														<div class="row">
+															<div class="col-6">
+																<h2>Product List</h2>
+															</div>
+															<div class="col-6">
+																<a href="/admin/product/form">
+																	<button type="button" class="btn-lg btn-primary float-right">
+																		Add Product</button>
+																</a>
+															</div>
+														</div>
+													</div>
+													<!-- /.card-header -->
+													<div class="card-body">
+														<table id="example1"
+															   class="table table-bordered table-striped table-hover">
+															<thead>
+
+															<tr>
+																<th>Id</th>
+																<th>Category</th>
+																<th>Name</th>
+																<th style="max-width: 70px;">Image</th>
+																<th>Price</th>
+																<th>Description</th>
+																<th>Detail</th>
+																<th>Create Date</th>
+																<th>Available</th>
+																<th>Action</th>
+															</tr>
+															</thead>
+															<tbody>
+															<tr th:each="item, itera :${items}">
+																<td th:text="${itera.index + 1}"></td>
+																<td th:text="${item.category.name}"></td>
+																<td th:text="${item.name}"></td>
+																<td>
+																	<div style="display: flex; justify-content: center;">
+																		<img th:src="@{|/img/productThumbnail/${item.thumbnail}|}"
+																			 style="width: 40px; height: 40px; border-radius: 10%;" />
+																	</div>
+																</td>
+
+																<td th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></td>
+																<td
+
+																		th:text="${item.description}"></td>
+																<td style="max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+																		th:text="${item.bigDescription}"></td>
+																<td th:text="${#dates.format(item.createDate, 'yyyy-MM-dd')}"></td>
+																<td>
+																	<div th:if="${not item.available}">
+																		<a th:href="@{|/admin/product/recover/${item.id}|}">
+																			<button type="button" class="btn btn-danger" style="font-size: 14px">Hết hàng</button>
+																		</a>
+																	</div>
+																	<div th:if="${item.available}">
+																		<a th:href="@{|/admin/product/delete/${item.id}|}">
+																			<button type="button" class="btn btn-success" style="font-size: 14px">Còn hàng</button>
+																		</a>
+																	</div>
+																</td>
+																<td>
+																	<div class="row justify-content-center">
+																		<a th:href="@{|/admin/product/edit/${item.id}|}"
+																		   style="margin-right: 5px">
+																			<button type="button" class="btn btn-warning">
+																				<i class="fa-solid fa-pen-to-square"
+																				   style="margin-left: 2px"></i>
+																			</button>
+																		</a>
+																	</div>
+																</td>
+															</tr>
+															</tbody>
+
+														</table>
+													</div>
+													<!-- /.card-body -->
+												</div>
+												<!-- /.card -->
+											</div>
+											<!-- /.col -->
+										</div>
+										<!-- /.row -->
+									</div>
+									<!-- .table -->
+								</div>
+								<div class="tab-pane fade" id="custom-tabs-one-profile" role="tabpanel" aria-labelledby="custom-tabs-one-profile-tab">
+									<!-- chart -->
+									<div class="container-fluid">
+										<div class="row">
+											<div class="col-12">
+												<!-- /.card -->
+												<div class="card">
+													<div class="card-header">
+														<div class="row justify-content-between">
+															<div class="col-6">
+																<h2>Image List</h2>
+															</div>
+														</div>
+													</div>
+													<!-- /.card-header -->
+													<div class="card-body">
+														<table id="example2"
+															   class="table table-bordered table-striped table-hover">
+															<thead>
+															<tr>
+																<th>Id</th>
+																<th>Name</th>
+																<th style="max-width: 80px">Image</th>
+															</tr>
+															</thead>
+															<tbody>
+															<tr th:each="item, itera:${itemImage}">
+																<td th:text="${itera.index + 1}"></td>
+																<td th:text="${item.product.name}"></td>
+																<td>
+																	<div style="display: flex; justify-content: center;">
+																		<img th:src="@{|/img/productImage/${item.image}|}"
+																			 style="width: 80px; height: 70px; border-radius: 10%;"/>
+																	</div>
+																</td>
+															</tr>
+															</tbody>
+														</table>
+													</div>
+													<!-- /.card-body -->
+												</div>
+												<!-- /.card -->
+											</div>
+											<!-- /.col -->
+										</div>
+										<!-- /.row -->
+									</div>
+									<!-- .chart -->
+								</div>
+							</div>
+						</div>
+						<!-- /.card -->
+					</div>
+				</div>
+			</div>
+
+			<!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
+	</div>
+	<!-- /.content-wrapper -->
+</main>

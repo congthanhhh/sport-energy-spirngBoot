@@ -1,0 +1,34 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::forgotPass})}">
+
+    <main th:fragment="forgotPass">
+
+
+        <div id="LoginForm">
+            <div class="container">
+                <div class="login-form">
+                    <div class="main-div">
+                        <div class="panel">
+                            <a href="" class="text-decoration-none">
+                                <span class="h5 text-uppercase text-primary bg-dark px-2">Sport's</span>
+                                <span class="h5 text-uppercase text-dark bg-primary px-2 ml-n1">Energy</span>
+                            </a>
+                            <p class="text-danger" th:text="${forgotPasswordMessage}"></p>
+                        </div>
+                        <form th:action="@{/home/forgot-password}" method="post">
+
+                            <div class="form-group">
+                                <label>Email address</label>
+                                <input type="email" class="form-control" name="email" aria-describedby="emailHelp" required placeholder="Enter email">
+                            </div>
+                            <input type="hidden" class="form-control" name="emailCc">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+</div>

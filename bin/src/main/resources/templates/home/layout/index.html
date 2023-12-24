@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      th:fragment="dynamic(main)">
+
+<head>
+  <meta charset="utf-8">
+  <title>Sport's Energy</title>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <meta content="Free HTML Templates" name="keywords">
+  <meta content="Free HTML Templates" name="description">
+
+  <div th:replace="~{lib/libraries :: libraries}"></div>
+<!--  Header Link-->
+  <div th:replace="~{lib/libraries :: headerLink}"></div>
+
+
+</head>
+
+<body  ng-app="shopping-cart-app" ng-controller="shopping-cart-ctrl">
+
+<!-- Topbar Start -->
+<div th:replace="~{home/layout/header :: header}"></div>
+<!-- Topbar End -->
+
+<!-- Content Start-->
+<div>
+  <main th:insert="${main}"></main>
+</div>
+<!-- Content End-->
+
+<!-- Footer Start -->
+<div th:replace="~{home/layout/footer :: footer}"></div>
+<!-- Footer End -->
+
+<!-- Back to Top -->
+<a href="#" class="btn btn-primary back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
+<!-- Footer Link-->
+<div th:replace="~{lib/libraries :: footerLink}"></div>
+
+</body>
+
+</html>

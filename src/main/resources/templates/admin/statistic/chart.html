@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bar chart</title>
+
+</head>
+<div th:fragment="chart1">
+  <figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+      A basic column chart comparing estimated corn and wheat production
+      in some countries.
+
+      The chart is making use of the axis crosshair feature, to highlight
+      the hovered country.
+    </p>
+    <div>
+      <input type="month" id="month" name="month">
+      <button onclick="updateChart()">Update Chart</button>
+    </div>
+    <script th:inline="javascript">
+
+      $(document).ready(function() {
+        // Gọi hàm để hiển thị biểu đồ khi trang được tải
+        updateChart();
+      });
+
+      function updateChart() {
+
+
+        var monthInput = document.getElementById('month');
+        var month = monthInput.value;
+
+        // Kiểm tra nếu không có giá trị được chọn
+        if (!month) {
+          // Lấy ngày hiện tại
+          var currentDate = new Date();
+
+          // Format tháng và năm hiện tại theo định dạng YYYY-MM
+          month = currentDate.toISOString().slice(0, 7);
+        }
+
+        /* Gửi yêu cầu AJAX để lấy dữ liệu theo ngày từ Spring Controller */
+        $.ajax({
+          type: 'GET',
+          url: '/rest/chart-revenue',
+          data: { month: month},
+          success: function(data) {
+            /* Cập nhật biểu đồ với dữ liệu mới */
+            updateChartWithData(data);
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+
+      function updateChartWithData(data) {
+        /* Lấy danh sách tên category và giá trị sumCate từ dữ liệu mới */
+        var categories = data[1].map(function(entry) {
+          return entry.category.name;
+        });
+        var sumCateValuesByMonth = data[0].map(function(entry) {
+          return entry.sumCate;
+        });
+        var sumCateValuesByYear = data[1].map(function(entry) {
+          return entry.sumCate;
+        });
+
+        /* Tính tổng totalAll */
+        var totalAll = sumCateValuesByMonth.reduce(function(acc, value) {
+          return acc + value;
+        }, 0);
+
+        Highcharts.chart('container', {
+          chart: {
+            type: 'line'
+          },
+          title: {
+            text: 'Biểu đồ thống kê doanh thu'
+          },
+          subtitle: {
+            text: 'Tổng doanh thu: ' + totalAll
+          },
+          xAxis: {
+            categories: categories
+          },
+          yAxis: {
+            title: {
+              text: 'Revenue (VND)'
+            }
+          },
+          plotOptions: {
+            line: {
+              dataLabels: {
+                enabled: true
+              },
+              enableMouseTracking: false
+            }
+          },
+          series: [{
+            name: 'Month',
+            data: sumCateValuesByMonth
+          }, {
+            name: 'Year',
+            data: sumCateValuesByYear
+          }]
+        });
+      }
+    </script>
+  </figure>
+</div>
+
+<div th:fragment="chart2">
+  <figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+      A basic column chart comparing estimated corn and wheat production
+      in some countries.
+
+      The chart is making use of the axis crosshair feature, to highlight
+      the hovered country.
+    </p>
+    <div>
+      <input type="month" id="month" name="month">
+      <button onclick="updateChart()">Update Chart</button>
+    </div>
+    <script th:inline="javascript">
+
+      $(document).ready(function() {
+        // Gọi hàm để hiển thị biểu đồ khi trang được tải
+        updateChart();
+      });
+
+      function updateChart() {
+
+
+        var monthInput = document.getElementById('month');
+        var month = monthInput.value;
+
+        // Kiểm tra nếu không có giá trị được chọn
+        if (!month) {
+          // Lấy ngày hiện tại
+          var currentDate = new Date();
+
+          // Format tháng và năm hiện tại theo định dạng YYYY-MM
+          month = currentDate.toISOString().slice(0, 7);
+        }
+
+        /* Gửi yêu cầu AJAX để lấy dữ liệu theo ngày từ Spring Controller */
+        $.ajax({
+          type: 'GET',
+          url: '/rest/chart-product',
+          data: { month: month},
+          success: function(data) {
+            /* Cập nhật biểu đồ với dữ liệu mới */
+            updateChartWithData(data);
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+
+      function updateChartWithData(data) {
+        /* Lấy danh sách tên category và giá trị sumCate từ dữ liệu mới */
+        var products = data.map(function(entry) {
+          return entry.product.name;
+        });
+        var buyProduct = data.map(function(entry) {
+          return entry.count;
+        });
+        var sellProduct = data.map(function(entry) {
+          return entry.totalQuantity;
+        });
+        var sumProduct = data.map(function(entry) {
+          return entry.totalQuantity * entry.product.price;
+        });
+
+        /* Tính tổng totalAll */
+        var totalAll = sumProduct.reduce(function(acc, value) {
+          return acc + value;
+        }, 0);
+
+        Highcharts.chart('container', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Biểu đồ thống kê sản phẩm'
+          },
+          subtitle: {
+            text: 'Tổng doanh thu: ' + totalAll
+          },
+          xAxis: {
+            categories: products
+          },
+          yAxis: {
+            title: {
+              text: 'Sản Phẩm'
+            }
+          },
+          plotOptions: {
+            line: {
+              dataLabels: {
+                enabled: true
+              },
+              enableMouseTracking: false
+            }
+          },
+          series: [{
+            name: 'Đã bán',
+            data: sellProduct
+          }, {
+            name: 'Lượt mua',
+            data: buyProduct
+          },
+            {
+              name: 'Doanh thu',
+              data: sumProduct
+            }]
+        });
+      }
+    </script>
+  </figure>
+</div>
+
+<div th:fragment="chart3">
+  <figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+      A basic column chart comparing estimated corn and wheat production
+      in some countries.
+
+      The chart is making use of the axis crosshair feature, to highlight
+      the hovered country.
+    </p>
+    <div>
+      <input type="month" id="month" name="month">
+      <button onclick="updateChart()">Update Chart</button>
+    </div>
+    <script th:inline="javascript">
+
+      $(document).ready(function() {
+        // Gọi hàm để hiển thị biểu đồ khi trang được tải
+        updateChart();
+      });
+
+      function updateChart() {
+
+
+        var monthInput = document.getElementById('month');
+        var month = monthInput.value;console.log(month)
+
+        // Kiểm tra nếu không có giá trị được chọn
+        if (!month) {
+          // Lấy ngày hiện tại
+          var currentDate = new Date();
+
+          // Format tháng và năm hiện tại theo định dạng YYYY-MM
+          month = currentDate.toISOString().slice(0, 7);
+        }
+
+        /* Gửi yêu cầu AJAX để lấy dữ liệu theo ngày từ Spring Controller */
+        $.ajax({
+          type: 'GET',
+          url: '/rest/chart-account',
+          data: { month: month},
+          success: function(data) {
+            /* Cập nhật biểu đồ với dữ liệu mới */
+            updateChartWithData(data);
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+
+      function updateChartWithData(data) {
+        /* Lấy danh sách tên category và giá trị sumCate từ dữ liệu mới */
+        var accounts = data.map(function(entry) {
+          return entry.account.username;
+        });
+        var buyProduct = data.map(function(entry) {
+          return entry.count;
+        });
+        var sumAccount = data.map(function(entry) {
+          return entry.sumTotal;
+        });
+
+        /* Tính tổng totalAll */
+        var totalAll = sumAccount.reduce(function(acc, value) {
+          return acc + value;
+        }, 0);
+
+        Highcharts.chart('container', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Biểu đồ thống kê tài khoản'
+          },
+          subtitle: {
+            text: 'Tổng doanh thu: ' + totalAll
+          },
+          xAxis: {
+            categories: accounts
+          },
+          yAxis: {
+            title: {
+              text: ''
+            }
+          },
+          plotOptions: {
+            line: {
+              dataLabels: {
+                enabled: true
+              },
+              enableMouseTracking: false
+            }
+          },
+          series: [{
+            name: 'Sản phẩm đã mua',
+            data: buyProduct
+          }, {
+            name: 'Tổng tiền',
+            data: sumAccount
+          }]
+        });
+      }
+    </script>
+  </figure>
+</div>
+
+<div th:fragment="chart4">
+  <figure class="highcharts-figure">
+    <div id="container"></div>
+    <p class="highcharts-description">
+      A basic column chart comparing estimated corn and wheat production
+      in some countries.
+
+      The chart is making use of the axis crosshair feature, to highlight
+      the hovered country.
+    </p>
+    <script th:inline="javascript">
+
+      $(document).ready(function() {
+        // Gọi hàm để hiển thị biểu đồ khi trang được tải
+        updateChart();
+      });
+
+      function updateChart() {
+        /* Gửi yêu cầu AJAX để lấy dữ liệu theo ngày từ Spring Controller */
+        $.ajax({
+          type: 'GET',
+          url: '/rest/chart-category',
+          success: function(data) {
+            /* Cập nhật biểu đồ với dữ liệu mới */
+            updateChartWithData(data);
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      }
+
+      function updateChartWithData(data) {
+        /* Lấy danh sách tên category và giá trị sumCate từ dữ liệu mới */
+        var category = data.map(function(entry) {
+          return entry.category.name;
+        });
+        var countProduct = data.map(function(entry) {
+          return entry.productCount;
+        });
+
+        Highcharts.chart('container', {
+          chart: {
+            type: 'column'
+          },
+          title: {
+            text: 'Biểu đồ thống kê loại hàng'
+          },
+          subtitle: {
+            text: ''
+          },
+          xAxis: {
+            categories: category
+          },
+          yAxis: {
+            title: {
+              text: 'Số lượng sản phẩm'
+            }
+          },
+          plotOptions: {
+            line: {
+              dataLabels: {
+                enabled: true
+              },
+              enableMouseTracking: false
+            }
+          },
+          series: [{
+            name: 'Sản phẩm',
+            data: countProduct
+          }]
+        });
+      }
+    </script>
+  </figure>
+</div>
+</html>

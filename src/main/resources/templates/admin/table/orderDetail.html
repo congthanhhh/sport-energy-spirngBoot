@@ -1,0 +1,116 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::orderDetails})}">
+
+	<div class="content-wrapper" th:fragment="orderDetails">
+
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h5>ORDER DETAIL</h5>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="#">Home</a></li>
+							<li class="breadcrumb-item"><a href="/admin/order">Order</a></li>
+							<li class="breadcrumb-item active">OrderDetail</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+
+		<!-- Main content -->
+		<div class="invoice p-3 mb-3 row">
+			<!-- Table row -->
+			<div class="col table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>DetailId</th>
+							<th style="width: 192px">Image</th>
+							<th>Name</th>
+							<th>Price</th>
+							<th>Quantity</th>
+							<th>Subtotal</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item: ${orderDetails}">
+							<td th:text="${item.id}"></td>
+							<td><img
+								th:src="@{|/img/productThumbnail/${item.product.thumbnail}|}"
+								alt="" width="30%" class="img-fluid"></td>
+							<td th:text="${item.product.name}"></td>
+							<td th:text="${item.product.price}"></td>
+							<td th:text="${item.quantity}"></td>
+							<td th:text="${item.price * item.quantity}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- /.Table row -->
+			<!-- Customer information-->
+			<div
+				class="col col-sm col-md-4 d-flex align-items-stretch flex-column"
+				style="height: 272px;">
+				<div class="card bg-light d-flex flex-fill">
+					<div class="card-header text-muted border-bottom-0">Customer
+						Info</div>
+					<div class="card-body pt-0">
+						<div class="row">
+							<div class="col-7">
+								<h2 class="lead">
+									<b th:text="${order.account.fullname}"></b>
+								</h2>
+								<ul class="ml-4 mb-0 fa-ul text-muted">
+									<li class="small"><span class="fa-li"><i
+											class="fas fa-lg fa-building"></i></span> Address: <span
+										th:text="${order.address}"></span></li>
+									<li class="small"><span class="fa-li"><i
+											class="far fa-envelope"></i></span> Phone: <span
+										th:text="${order.phone}"></span></li>
+									<li class="small"><span class="fa-li"><i
+											class="far fa-envelope"></i></span> Email: <span
+										th:text="${order.account.email}"></span></li>
+								</ul>
+							</div>
+							<div class="col-5 text-center">
+								<img th:src="@{|/img/user/${order.account.photo}|}"
+									alt="user-avatar" class="img-circle img-fluid">
+							</div>
+						</div>
+					</div>
+					<div class="card-footer">
+						<div class="d-flex justify-content-between">
+							<div>
+								OrderId: <span th:text="${order.id}"></span>
+							</div>
+							<div>
+								Order date: <span th:text="${order.createDate}"></span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- /.Customer information -->
+		</div>
+		<!-- Total price -->
+		<div class="row">
+			<div class="offset-6">
+				<div class="table-responsive">
+					<table class="table">
+						<tr style="font-size: 18px">
+							<th>Total:</th>
+							<th th:text="${total}"></th>
+						</tr>
+					</table>
+				</div>
+			</div>
+		</div>
+		<!-- /.Total price -->
+		<!-- /.content -->
+
+	</div>
+</main>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6"
+      th:fragment="admin(main)">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin DataTables</title>
+
+    <div th:replace="~{lib/libraries :: libraries}"></div>
+    <div th:replace="~{lib/libraries :: adminHeaderLink}"></div>
+</head>
+<body class="hold-transition sidebar-mini">
+<div class="wrapper">
+
+    <div th:insert="~{admin/layout/navbar :: adminNavHeader}"></div>
+    <div th:insert="~{admin/layout/navbar :: adminSlideBar}"></div>
+
+    <main th:replace="${main}"></main>
+
+    <div th:insert="~{admin/layout/navbar :: adminFooter}"></div>
+
+</div>
+<!-- ./wrapper -->
+<div th:replace="~{lib/libraries :: adminFooterLink}"></div>
+<!-- AdminLTE App -->
+<script>
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "lengthMenu": [5, 10, 25, 50],
+            "pageLength": 7,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "pageLength": 7,
+            "searching": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+</script>
+</body>
+</html>

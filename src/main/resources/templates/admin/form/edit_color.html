@@ -1,0 +1,83 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::editcolorTable})}">
+    <div class="content-wrapper" th:fragment="editcolorTable">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>ColorTable</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/color">ColorTable</a></li>
+                            <li class="breadcrumb-item active">EditColor</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Edit Color</h2>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <form   th:action="@{|/admin/color/edit_color/${color.id}|}" method="post"
+                                        th:object="${color}">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="form-group col-sm-3">
+                                                <label for="InputEditId">Id</label>
+                                                <input type="text" th:field="*{id}"  class="form-control" id="InputEditId" placeholder="Enter Id">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label for="InputEditName">Name</label>
+                                                <input type="text" class="form-control" th:field="*{name}" id="InputEditName" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label>Available</label>
+                                                <div class="row">
+                                                    <div class="form-check col-1" style="margin-left: 10px; margin-right: 10px">
+                                                        <input th:field="*{available}" th:value="true" class="form-check-input" type="radio" name="radio1">
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                    <div class="form-check col-sm-1" style="margin-left: 10px">
+                                                        <input th:field="*{available}" th:value="false" class="form-check-input" type="radio" name="radio1">
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <button type="reset"  class="btn btn-danger float-right">Cancel</button>
+
+                                        <button type="submit" class="btn btn-success float-right" style="margin-right: 10px">Submit</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+</main>

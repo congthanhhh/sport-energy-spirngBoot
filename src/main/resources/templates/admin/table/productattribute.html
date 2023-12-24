@@ -1,0 +1,103 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::productAttribute})}">
+
+    <div class="content-wrapper" th:fragment="productAttribute">
+        <section class="content-header">
+            <div class="container-fluid">
+				<!-- admin box revenue -->
+				<div th:insert="~{admin/layout/navbar :: adminBoxRevenue}"></div>
+				<!-- /admin box revenue -->
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>Product-AttributeTables</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">Product-AttributeTables</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h2>Số lượng hàng hiện có:</h2>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/admin/product_attribute/add_productattribute">
+                                            <button type="button" class="btn-lg btn-primary float-right">
+                                                Add Attribute
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example1" class="table table-bordered table-striped">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>ProductId</th>
+                                        <th>ColorId</th>
+                                        <th>SizeId</th>
+                                        <th>Stock</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <tr th:each="pattribute : ${pAttributes}">
+                                        <td>[[${pattribute.id}]]</td>
+                                        <td>[[${pattribute.product.name}]]</td>
+                                        <td>[[${pattribute.colors.name}]]</td>
+                                        <td>[[${pattribute.sizes.name}]]</td>
+                                        <td>[[${pattribute.stock}]]</td>
+                                        <td>
+                                            <div class="row justify-content-center">
+                                                <a th:href="@{'/admin/product_attribute/editForm/' + ${pattribute.id}}" style="margin-right: 5px">
+                                                    <button type="button" class="btn btn-warning"><i class="fa-solid fa-pen-to-square" style="margin-left: 4px"></i></button>
+                                                </a>
+                                                <a th:href="@{'/admin/product_attribute/delete/' + ${pattribute.id}}" style="margin-right: 5px">
+                                                	<button type="button" class=" btn btn-danger"><i class="fa-regular fa-trash-can"></i></button>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                    <tfoot>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th>Product</th>
+                                        <th>Color</th>
+                                        <th>Size</th>
+                                        <th>Stock</th>
+                                        <th>Action</th>
+
+                                    </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+</main>

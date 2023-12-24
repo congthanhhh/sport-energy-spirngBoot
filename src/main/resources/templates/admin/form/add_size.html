@@ -1,0 +1,62 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::addsize})}">
+    <div class="content-wrapper" th:fragment="addsize">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>SizeTable</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/size">SizeTable</a></li>
+                            <li class="breadcrumb-item active">AddSize</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- /.card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Add Size</h2>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <form   th:action="@{/admin/size/createsize}" method="post"
+                                        th:object="${size}">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="form-group col-6">
+                                                <label for="InputPassword1">Name</label>
+                                                <input type="text" th:field="*{name}" class="form-control" id="InputPassword1" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <button type="reset"  class="btn btn-danger float-right">Cancel</button>
+
+                                        <button type="submit" class="btn btn-success float-right" style="margin-right: 10px">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+</main>

@@ -1,0 +1,115 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::revenueAttribute})}">
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper" th:fragment="revenueAttribute">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+				<!-- admin box revenue -->
+				<div th:insert="~{admin/layout/navbar :: adminBoxRevenue}"></div>
+				<!-- /admin box revenue -->
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>ProductTable</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item active">ProductTable</li>
+                        </ol>
+                    </div>
+                </div>
+
+              
+
+
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- /.card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row justify-content-between">
+                                    <div class="col-6">
+                                        <h2>Product List</h2>
+                                    </div>
+                                    <div class="">
+                                        <form th:action="@{/admin/revenue-attribute}"
+                                              method="get">
+                                            <div class="row">
+                                                <div class="mr-2">
+                                                    <label>Start date:</label>
+                                                    <input type="month" name="month"
+                                                           class="form-control"
+                                                           placeholder="start date">
+                                                </div>
+                                                <div class="" style="padding-top: 32px">
+                                                    <button type="submit"
+                                                            class="btn btn-primary">Search
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example1"
+                                       class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Id</th>
+                                        <th style="max-width: 70px">Image</th>
+                                        <th>Sản phẩm</th>
+                                        <th>Màu sắc</th>
+                                        <th>Size</th>
+                                        <th>Đã bán</th>
+                                        <th>Doanh thu</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="item :${items}">
+                                        <td th:text="${item.productAttribute.id}"></td>
+                                        <td>
+                                            <div style="display: flex; justify-content: center;">
+                                                <img th:src="@{|/img/productThumbnail/${item.productAttribute.product.thumbnail}|}"
+                                                     style="width: 40px; height: 40px; border-radius: 10%;"/>
+                                            </div>
+                                        </td>
+                                        <td th:text="${item.productAttribute.product.name}"></td>
+                                        <td th:text="${item.productAttribute.colors.name}"></td>
+                                        <td th:text="${item.productAttribute.sizes.name}"></td>
+                                        <td th:text="${item.totalQuantity}"></td>
+                                        <td th:text="${#numbers.formatDecimal(item.revenue, 0, 'COMMA', 0, 'POINT')}"></td>
+
+                                    </tr>
+                                    </tbody>
+                                    <tr>
+                                        <td colspan="5" class="text-right font-weight-bold">Total:</td>
+                                        <td colspan="2" class="align-middle"><span
+                                                th:text="${total}"></span>
+                                            VNĐ <span class="product-custom-currency"></span></td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+</main>

@@ -1,0 +1,101 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::editcategoriesTable})}">
+    <div class="content-wrapper" th:fragment="editcategoriesTable">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>CategoriesTable</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/categories">CategoriesTable</a></li>
+                            <li class="breadcrumb-item active">EditCategories</li>
+                        </ol>
+                    </div>
+                </div>
+            </div><!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <!-- /.card -->
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Edit Categories</h2>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <form th:action="@{|/admin/categories/edit/${category.id}|}" method="post"
+                                      th:object="${category}" enctype="multipart/form-data">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class=" form-group col-1">
+                                                <!-- Thêm khung chứa ảnh ở bên trái với CSS trực tiếp -->
+                                                <div
+                                                        style="float: left; border-radius: 10%; margin-bottom: 10px; overflow: hidden;">
+                                                    <!-- Ảnh mặc định hiển thị trước khi chưa lấy ảnh -->
+                                                    <img id="previewImage" th:src="@{|/img/category/*{image}|}"
+                                                         width="70px" height="70px" alt="User image">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-11">
+                                                <label for="InputFile">Image</label>
+                                                <div class="input-group">
+                                                    <div class="custom-file">
+                                                        <input type="file" class="custom-file-input" name="img"
+                                                               id="InputFile" onchange="showPreview(this)"> <label
+                                                            class="custom-file-label" for="InputFile" id="InputLabel">
+                                                        Choose file </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="InputUsername1">Id</label>
+                                                <input type="text" class="form-control" id="InputUsername1" th:field="*{id}"  required="required" placeholder="Enter Id">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label for="InputPassword1">Name</label>
+                                                <input type="text" class="form-control" id="InputPassword1" th:field="*{name}"  required="required" placeholder="Enter Name">
+                                            </div>
+                                            <div class="form-group col-4">
+                                                <label>Available</label>
+                                                <div class="row">
+                                                    <div class="form-check col-1" style="margin-left: 10px; margin-right: 10px">
+                                                        <input th:field="*{available}" th:value="true" class="form-check-input" type="radio" name="radio1" checked="checked">
+                                                        <label class="form-check-label">Yes</label>
+                                                    </div>
+                                                    <div class="form-check col-sm-1" style="margin-left: 10px">
+                                                        <input th:field="*{available}" th:value="false" class="form-check-input" type="radio" name="radio1">
+                                                        <label class="form-check-label">No</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer d-flex justify-content-end">
+                                        <button type="submit" class="btn btn-success">Submit</button>
+                                        <div class="mx-2"></div>
+                                        <!-- Thêm khoảng cách ngang -->
+                                        <button type="reset" class="btn btn-danger">Cancel</button>
+                                    </div>
+                                </form>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+</main>

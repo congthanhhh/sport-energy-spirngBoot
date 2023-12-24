@@ -1,0 +1,150 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::addproductTable})}">
+    <div class="content-wrapper" th:fragment="addproductTable">
+        <section class="content-header">
+            <div class="container-fluid">
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>ProductTable</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="/admin/product">ProductTable</a></li>
+                            <li class="breadcrumb-item active">AddProduct</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- /.col -->
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h2>Add Product</h2>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <form id="form-1" th:action="@{/admin/product}" method="post" th:object="${product}"
+                                       enctype="multipart/form-data" >
+                                    <div class="card-body row">
+                                        <div class="col-sm-6">
+                                            <div class="">
+                                                <div class="form-group ">
+                                                    <label for="category">Category</label>
+                                                    <select th:field="*{category.id}" class="form-control" id="category" name="category">
+                                                        <option th:each="cat : ${categories}" th:value="${cat.id}" th:text="${cat.name}">Category Name</option>
+                                                    </select>
+
+                                                </div>
+                                                <div class="form-group ">
+                                                    <label for="InputEditPrice">Price</label>
+                                                    <input th:field="*{price}" type="text" class="form-control" id="InputEditPrice"  placeholder="Enter Price">
+                                                    <span class="form-message"></span>
+                                                </div>
+                                            </div>
+                                            <div class="">
+                                                <div class="form-group ">
+                                                    <label for="InputEditName">Name</label>
+                                                    <input th:field="*{name}" type="text" class="form-control" id="InputEditName" placeholder="Enter Name">
+                                                    <span class="form-message"></span>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="form-group col-6">
+                                                    <div class="form-group">
+                                                        <label for="InputEditDate">Created Date</label>
+                                                        <input  disabled type="date" class="form-control" id="InputEditDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}" placeholder="Select date">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group col-6">
+                                                    <label>Available</label>
+                                                    <div class="row">
+                                                        <div class="form-check col-1" style="margin-left: 10px; margin-right: 10px">
+                                                            <input th:field="*{available}" th:value="true" class="form-check-input" type="radio" name="radio1" checked="checked">
+                                                            <label class="form-check-label">Yes</label>
+                                                        </div>
+                                                        <div class="form-check col-sm-1" style="margin-left: 10px">
+                                                            <input th:field="*{available}" th:value="false" class="form-check-input" type="radio" name="radio1">
+                                                            <label class="form-check-label">No</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <img id="previewImage" th:src="@{|/assets/img/productThumbnail/*{thumbnail}|}" width="200px" height="200px" alt="Choose thumbnail" class="mb-2 image-upload"
+                                                     onclick="document.getElementById('fileInput').click();">
+                                                <input type="file" id="fileInput" name="productThumbnail" style="display: none;" onchange="showPreview2(this, 'previewImage')"/>
+                                                <span class="form-message"></span>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <img id="previewImage1" src="" width="100px" height="100px" alt="Choose image" class="mb-2 image-upload" onclick="document.getElementById('fileInput1').click();">
+                                                    <input id="fileInput1" type="file" name="productImage1" onchange="showPreview2(this, 'previewImage1')" style="display: none"/>
+                                                    <span class="form-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <img id="previewImage2" src="" width="100px" height="100px" alt="Choose image" class="mb-2 image-upload" onclick="document.getElementById('fileInput2').click();">
+                                                    <input id="fileInput2" type="file" name="productImage2" onchange="showPreview2(this, 'previewImage2')" style="display: none"/>
+                                                    <span class="form-message"></span>
+                                                </div>
+                                                <div class="form-group">
+                                                    <img id="previewImage3" src="" width="100px" height="100px" alt="Choose image" class="mb-2 image-upload" onclick="document.getElementById('fileInput3').click();">
+                                                    <input id="fileInput3" type="file" name="productImage3" onchange="showPreview2(this, 'previewImage3')" style="display: none"/>
+                                                    <span class="form-message"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            <div class="form-group col-12">
+                                                <label>Description</label>
+                                                <textarea th:field="*{description}" class="form-control" rows="3" placeholder="Enter Description"></textarea>
+                                            </div>
+
+                                            <div class="form-group col-12">
+                                                <label>Larger description</label>
+                                                <textarea th:field="*{bigDescription}" class="form-control" rows="3" placeholder="Enter Description"></textarea>
+                                            </div>
+
+                                    </div>
+                                    <!-- /.card-body -->
+                                    <div class="card-footer">
+                                        <button type="submit" th:formaction="@{/admin/product/create}" class="btn btn-success float-right" style="margin-right: 10px">Create</button>
+                                    </div>
+                                </form>
+                            </div><!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    <script>
+
+        Validator({
+            form: '#form-1',
+            formGroupSelector: '.form-group',
+            errorSelector: '.form-message',
+            rules: [
+                Validator.isRequire('#InputEditName', 'Vui lòng nhập tên đầy đủ'),
+                Validator.isRequire('#InputEditPrice', 'Vui lòng nhập giá'),
+                Validator.isRequire('#fileInput', 'Vui lòng chọn thumbnail '),
+                Validator.isRequire('#fileInput1', 'Vui lòng chọn image '),
+                Validator.isRequire('#fileInput2', 'Vui lòng chọn image '),
+            ],
+        });
+
+    </script>
+    </div>
+</main>

@@ -1,0 +1,109 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::categoriesTable})}">
+	<div class="content-wrapper" th:fragment="categoriesTable">
+		<!-- Content Header (Page header) -->
+		<section class="content-header">
+			<div class="container-fluid">
+				<!-- admin box revenue -->
+				<div th:insert="~{admin/layout/navbar :: adminBoxRevenue}"></div>
+				<!-- /admin box revenue -->
+				<div class="row mb-2">
+					<div class="col-sm-6">
+						<h1>CategoriesTable</h1>
+					</div>
+					<div class="col-sm-6">
+						<ol class="breadcrumb float-sm-right">
+							<li class="breadcrumb-item"><a href="/">Home</a></li>
+							<li class="breadcrumb-item active">CategoriesTable</li>
+						</ol>
+					</div>
+				</div>
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- Main content -->
+		<section class="content">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-12">
+						<!-- /.card -->
+						<div class="card">
+							<div class="card-header">
+								<div class="row">
+									<div class="col-6">
+										<h2>Categories List</h2>
+									</div>
+									<div class="col-6">
+										<a href="/admin/categories/createform">
+											<button type="button" class="btn-lg btn-primary float-right">
+												Add Category</button>
+										</a>
+									</div>
+								</div>
+							</div>
+							<!-- /.card-header -->
+							<div class="card-body">
+								<table id="example1" class="table table-bordered table-striped">
+									<thead>
+									<tr>
+										<th>Id</th>
+										<th>Image</th>
+										<th>Name</th>
+										<!-- <th>Product</th> -->
+										<th>Available</th>
+										<th>Action</th>
+									</tr>
+									</thead>
+									<tbody>
+									<tr th:each="category:${categories}">
+										<td th:text="${category.id}"></td>
+										<td style="width: 50px">
+											<div style="display: flex; justify-content: center;">
+												<img class="img-fluid w-90"
+													 th:src="@{|/img/category/*{category.image}|}"
+													 style="width: 30px; height: 30px; border-radius: 10%;">
+											</div>
+										</td>
+										<td>[[${category.name}]]</td>
+										<!-- <td th:text="${category.productCount}"></td> -->
+										<td><div>
+											<div th:if="${not category.available}">
+												<a th:href="@{|/admin/categories/recover/${category.id}|}">
+													<button type="button" class="btn btn-danger">Off</button>
+												</a>
+											</div>
+											<div th:if="${category.available}">
+												<a th:href="@{|/admin/categories/delete/${category.id}|}">
+													<button type="button" class="btn btn-success">On</button>
+												</a>
+											</div>
+										</div></td>
+										<td>
+											<div class="row justify-content-center">
+
+												<div class="col-2">
+													<a
+														th:href="@{'/admin/categories/editForm/' + ${category.id}}">
+														<button type="button" class="btn btn-warning">
+															<i class="fa-solid fa-pen-to-square"></i>
+														</button>
+													</a>
+												</div>
+											</div>
+										</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+							<!-- /.card-body -->
+						</div>
+						<!-- /.card -->
+					</div>
+					<!-- /.col -->
+				</div>
+				<!-- /.row -->
+			</div>
+			<!-- /.container-fluid -->
+		</section>
+		<!-- /.content -->
+	</div>
+</main>

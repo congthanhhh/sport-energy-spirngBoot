@@ -1,0 +1,142 @@
+<main th:replace="~{/admin/layout/index :: admin(~{::accountTable})}">
+
+
+    <div class="content-wrapper" th:fragment="accountTable">
+        <section class="content-header">
+            <div class="container-fluid">
+                <!-- admin box revenue -->
+                <div th:insert="~{admin/layout/navbar :: adminBoxRevenue}"></div>
+                <!-- /admin box revenue -->
+                <div class="row mb-2">
+                    <div class="col-sm-6">
+                        <h1>AccountTables</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <ol class="breadcrumb float-sm-right">
+                            <li class="breadcrumb-item"><a href="/">Home</a></li>
+                            <li class="breadcrumb-item active">AccountTables</li>
+                        </ol>
+                    </div>
+                </div>
+                
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- Main content -->
+        <section class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <h2>Account List</h2>
+                                    </div>
+                                    <div class="col-6">
+                                        <a href="/admin/accounts/createform">
+                                            <button type="button" class="btn-lg btn-primary float-right">
+                                                Add Account
+                                            </button>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example1"
+                                       class="table table-bordered table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Username</th>
+                                        <th>Password</th>
+                                        <th>Name</th>
+                                        <th>Address</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Create Date</th>
+                                        <th>Role</th>
+                                        <th>Status</th>
+                                        <th>Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="account : ${accounts}">
+                                        <td>
+                                            <div style="display: flex; justify-content: center;">
+                                                <img th:src="@{|/img/user/${account.photo}|}"
+                                                     style="width: 30px; height: 30px;border-radius: 10%;"/>
+                                            </div>
+                                        </td>
+                                        <td th:text="${account.username}">Abc123</td>
+                                        <td style="max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                            th:text="${account.password}">Password
+                                        </td>
+                                        <td th:text="${account.fullname}">Abc</td>
+                                        <td th:text="${account.address}">Abc</td>
+                                        <td th:text="${account.phone}">Abc</td>
+                                        <td style="max-width: 100px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;"
+                                        th:text="${account.email}">abc123@example.com</td>
+                                        <td th:text="${account.createDate}">31/10/2023</td>
+                                        <td>
+                                            <div th:each="authority : ${account.authorities}">
+                                                <span th:text="${authority.role.name}"></span>
+                                            </div>
+                                            <!-- <div th:with="roles=${#sets.toSet(account.authorities.![role.name])}">
+                                               
+                                                <div th:if="${roles.contains('Directors')}">
+                                                    <span th:text="'Directors'"></span>
+                                                </div>
+                                                <div th:unless="${roles.contains('Directors')}" th:if="${roles.contains('Staffs')}">
+                                                    <span th:text="'Staffs'"></span>
+                                                </div>
+                                                <div th:unless="${roles.contains('Directors') or roles.contains('Staffs')}">
+                                                    <span th:text="'Customers'"></span>
+                                                </div>
+                                            </div> -->
+                                        </td>
+                                        <td th:if="${account.available}">Đang hoạt động</td>
+                                        <td th:if="${!account.available}">Đã vô hiệu</td>
+                                        <td>
+                                            <div class="row justify-content-center">
+                                                <a style="margin-right: 5px"
+                                                   th:href="@{'/admin/accounts/editForm/' + ${account.username}}">
+                                                    <button type="button" class="btn btn-warning">
+                                                        <i class="fa-solid fa-pen-to-square"></i>
+                                                    </button>
+                                                </a>
+                                                <a style="margin-right: 5px" th:if="${!account.available}"
+                                                   th:href="@{'/admin/accounts/backup/' + ${account.username}}">
+                                                    <button type="button" class="btn btn-success">
+                                                        <i class="fa-solid fa-repeat"></i>
+                                                    </button>
+                                                </a>
+                                                <a th:if="${account.available}"
+                                                   th:href="@{'/admin/accounts/delete/' + ${account.username}}">
+                                                    <button type="button" class=" btn btn-danger">
+                                                        <i class="fa-regular fa-trash-can"></i>
+                                                    </button>
+                                                </a>
+                                            </div>
+                                        </td>
+                                        
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                        <!-- /.card -->
+                    </div>
+                    <!-- /.col -->
+                </div>
+                <!-- /.row -->
+            </div>
+            <!-- /.container-fluid -->
+        </section>
+        <!-- /.content -->
+    </div>
+
+</main>

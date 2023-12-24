@@ -1,0 +1,68 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::orderDetail})}">
+
+	<main th:fragment="orderDetail">
+
+		<div class="row px-xl-5 justify-content-center">
+			<div class="col-lg-10 table-responsive mb-5">
+				<table
+					class="table table-light table-borderless table-hover text-center mb-0">
+					<thead class="thead-dark">
+						<tr>
+							<th th:text="#{th.1}">No.</th>
+							<th th:text="#{th.orderdetail}">Image</th>
+							<th th:text="#{th.orderdetail1}">Product</th>
+							<th th:text="#{th.3}">Address</th>
+							<th th:text="#{th.4}">Phone</th>
+							<th th:text="#{th.orderdetail2}">Size</th>
+							<th th:text="#{th.orderdetail3}">Color</th>
+							<th th:text="#{th.orderdetail4}">Quantity</th>
+							<th th:text="#{th.orderdetail5}">Product Price</th>
+							<th th:text="#{th.orderdetail6}">TT</th>
+						</tr>
+					</thead>
+					<tbody class="align-middle">
+						<tr th:each="item, itera: ${orderDetail}">
+							<td th:text="${itera.index + 1}"></td>
+							<td class="align-middle"><img
+								th:src="@{|/img/productThumbnail/${item.product.thumbnail}|} "
+								alt="" style="width: 50px;"></td>
+							<td class="align-middle" th:text="${item.product.name}"></td>
+							<td class="align-middle" th:text="${item.order.address}"></td>
+							<td class="align-middle" th:text="${item.order.phone}"></td>
+							<td class="align-middle"
+								th:text="${item.productattribute.sizes.name}"></td>
+							<td class="align-middle"
+								th:text="${item.productattribute.colors.name}"></td>
+							<td class="align-middle" th:text="${item.quantity}"></td>
+							<td class="align-middle"><span
+								th:text="${#numbers.formatDecimal(item.price, 0, 'COMMA', 0, 'POINT')}"></span><span
+								class="product-custom-currency"> VNĐ</span></td>
+							<!-- Cột tổng tiền cho mỗi sản phẩm -->
+							<td class="align-middle"><span
+								th:text="${#numbers.formatDecimal(item.price * item.quantity, 0, 'COMMA', 0, 'POINT')}"></span>
+								<span class="product-custom-currency"> VNĐ</span></td>
+						</tr>
+						<!-- Hàng để hiển thị tổng -->
+						<tr>
+							<td colspan="6" class="text-right font-weight-bold" th:text="#{th.orderdetail7}">Total:</td>
+							<td colspan="2" class="align-middle"><span th:text="${total}"></span>
+								VNĐ <span class="product-custom-currency"></span></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="mb-30">
+			<div class="input-group d-flex justify-content-center">
+				<div class="input-group-append mr-2">
+					<a href="/order/myOrder" class="btn btn-primary" th:text="#{th.orderdetail8}">My Order</a>
+				</div>
+				<div class="input-group-append ml-2">
+					<a href="/home/shop" class="btn btn-primary" th:text="#{th.orderdetail9}">CONTINUE SHOPPING</a>
+				</div>
+			</div>
+		</div>
+
+	</main>
+
+</div>

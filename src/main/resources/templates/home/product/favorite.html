@@ -1,0 +1,141 @@
+<div th:replace="~{/home/layout/index :: dynamic(~{::favorite})}">
+
+    <main th:fragment="favorite">
+
+
+        <!-- Shop Start -->
+        <div class="container-fluid">
+            <div class="row px-xl-5">
+
+                <!-- Shop Product Start -->
+                <div class="col-lg-12 col-md-8">
+                    <div class="row pb-12">
+                        <div class="col-lg-3 col-md-6 col-sm-6 pb-1" th:each="favorite : ${favorites}">
+
+
+                            <div class="product-item bg-light mb-4">
+                                <div class="product-img position-relative overflow-hidden d-flex justify-content-center">
+                                    <!-- Sử dụng thuộc tính của sản phẩm từ favorite.product -->
+                                    <img class="img-fluid w-75"
+                                         th:src="@{|/img/productThumbnail/${favorite.product.thumbnail}|}" alt="">
+                                    <a th:href="@{|/product/detail/${favorite.product.id}|}" class="product-action"></a>
+                                    <form id="removeFavoriteForm">
+                                        <input type="hidden" id="favoriteId" th:value="${favorite.id}"/>
+                                        <button type="button" th:onclick="'removeFavorite(' + ${favorite.id} + ')'"
+                                                class="fa-solid fa-x btn-danger"
+                                                style="position: absolute; top: 10px; right: 10px;"></button>
+                                    </form>
+
+                                </div>
+
+                                <div class="text-center py-4">
+                                    <div class="col-12">
+                                        <!-- Hiển thị tên sản phẩm từ favorite.product -->
+                                        <a style="display: block; max-width: 100%; overflow: hidden; word-wrap: break-word;"
+                                           class="h6 text-decoration-none text-truncate text-break"
+                                           th:href="@{|/product/detail/${favorite.product.id}|}"
+                                           th:title="${favorite.product.name}">
+                                            <!-- Sử dụng favorite.product.name để hiển thị tên sản phẩm -->
+                                            <span th:text="${favorite.product.name}"></span>
+                                        </a>
+                                    </div>
+                                    <div class="d-flex align-items-center justify-content-center mt-2">
+                                        <h5>
+                                            <!-- Hiển thị giá sản phẩm từ favorite.product -->
+                                            <span th:text="${#numbers.formatDecimal(favorite.product.price, 0, 'COMMA', 0, 'POINT')}"></span>
+                                            <span class="product-custom-currency"> VNĐ</span>
+                                        </h5>
+                                    </div>
+                                    <!-- <button th:href="@{'/product/favorites/remove/' + ${favorite.product.id}}" class="fa-solid fa-x btn-danger"></button> -->
+                                    <!-- <form th:action="@{/product/favorites/remove}" method="post">
+                                        <input type="hidden" name="productId" th:value="${favorite.product.id}" />
+                                        <button type="submit" class="btn btn-danger">Xoá khỏi yêu thích</button>
+                                    </form> -->
+
+                                    <!-- <form id="removeFromFavoritesForm">
+                                        <input type="hidden" id="favoriteId" th:value="${favorite.id}" />
+                                        <button type="submit" class="btn btn-danger">Xoá khỏi yêu thích</button>
+                                    </form> -->
+
+
+                                    <div class="d-flex align-items-center justify-content-center mb-1">
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small class="fa fa-star text-primary mr-1"></small>
+                                        <small>(99)</small>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <!-- Shop Product End -->
+            </div>
+        </div>
+        <!-- Shop End -->
+
+        <!-- <script type="text/javascript">
+           $(document).ready(function() {
+    $(".remove-btn").click(function() {
+        var favoriteId = $(this).data("favorite-id");
+        var btn = $(this); // Lưu trữ tham chiếu tới nút "Xóa"
+
+        $.ajax({
+            type: "DELETE",
+            url: "/product/favorites/" + favoriteId + "/remove",
+            success: function(response) {
+                alert(response); // Hiển thị thông báo thành công
+
+                // Xác định phần tử cha có class .favorite-item và xóa nó
+                btn.parents(".favorite-item:first").remove();
+
+                // Tải lại trang sau khi xóa thành công
+                location.reload();
+            },
+            error: function(xhr, status, error) {
+                alert("Đã xảy ra lỗi: " + xhr.responseText); // Hiển thị thông báo lỗi
+            }
+        });
+    });
+});
+
+
+        </script> -->
+
+
+        <script>
+            function removeFavorite(favoriteId) {
+
+                $.ajax({
+                    type: "DELETE",
+                    url: "/product/favorites/" + favoriteId + "/remove",
+                    success: async function (response) {
+                        await Swal.fire({
+                            position: "center",
+                            icon: "success",
+                            title: "Đã xoá sản phẩm khỏi yêu thích!",
+                            showConfirmButton: false,
+                            timer: 1200
+                        });
+                        location.reload(); // Tải lại trang sau khi xoá
+                    },
+                    error: function (xhr, status, error) {
+                        alert("Đã xảy ra lỗi: " + xhr.responseText); // Hiển thị thông báo lỗi nếu cần
+                    }
+                });
+            }
+        </script>
+
+
+    </main>
+
+</div>
+
+
+
+
+
